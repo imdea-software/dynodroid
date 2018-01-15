@@ -1,0 +1,6 @@
+
+# the build folder
+deploy
+
+# sdcard.img
+dynodroidsetup/freshavd/emu.avd/sdcard.img
