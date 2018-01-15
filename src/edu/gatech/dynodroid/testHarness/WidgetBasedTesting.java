@@ -178,7 +178,8 @@ public class WidgetBasedTesting extends TestStrategy {
 			ArrayList<String> odexBeforeInstall = new ArrayList<String>();
 			odexBeforeInstall = this.testDevice
 					.executeShellCommand("ls /data/dalvik-cache");
-			this.androidAppHandler.uninstallApp();
+			//SHAUVIK: Dynodroid hangs while uninstalling app. Bug.
+			//boolean retVal = this.androidAppHandler.uninstallApp()
 			boolean retVal = this.testDevice.cleanSDCard()
 					&& this.androidAppHandler
 							.installApp(AppSrcHandler.instrumentInstall);

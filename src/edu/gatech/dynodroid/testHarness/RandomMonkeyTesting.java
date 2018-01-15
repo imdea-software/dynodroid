@@ -142,8 +142,8 @@ public class RandomMonkeyTesting extends TestStrategy {
 			odexBeforeInstall = this.testDevice
 					.executeShellCommand("ls /data/dalvik-cache");
 
-			this.androidAppHandler.uninstallApp();
-			boolean retVal = this.testDevice.cleanSDCard()
+			boolean retVal = this.androidAppHandler.uninstallApp()
+					&& this.testDevice.cleanSDCard()
 					&& this.androidAppHandler
 							.installApp(AppSrcHandler.instrumentInstall);
 			ArrayList<String> odexAfterInstall = this.testDevice
