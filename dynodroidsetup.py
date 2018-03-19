@@ -19,9 +19,9 @@ propertiesFileName = "dynodroid.properties"
 
 #Input Validation
 def checkParams(arguments):
-    if (len(arguments) != 3):
+    if (len(arguments) != 4):
         print "Wrong Usage Buddy!!!"
-        print "Usage:",arguments[0]," <path_To_The_Svn_Path_of_Dynodroid> <path_To_The_Deployment_Directory>"
+        print "Usage:",arguments[0]," <path_To_The_Svn_Path_of_Dynodroid> <path_To_The_Deployment_Directory> <show_Emulator>"
         sys.exit(-1)
 
     if (not os.path.isdir(arguments[1])):
@@ -34,9 +34,16 @@ def checkParams(arguments):
     else:
         os.makedirs(arguments[2])
 
+    showEmulator_int=0
+    if(not isinstance(arguments[3], int)):
+        print "Warning: Thar arg 3 is not an integer. Integer use to run emu in windows modo or not: 0 -no-window | 1 (with window)"
+    else:
+        showEmulator_int=int(arguments[3])
+
     #Copy the provided data to the global variables
     global svnDir
     global destDir
+    global showEmulator_int
     svnDir = os.path.abspath(arguments[1])
     destDir = os.path.abspath(arguments[2])
     
@@ -146,7 +153,9 @@ f.write("avd_store="+avdPath+"\n")
 f.write("event_count=100,1000\n")
 f.write("apktool_loc="+destDir+"/tools/apktool/apktool.jar\n")
 f.write("tools_dir="+destDir+"/tools/\n")
-f.write("manual_mode=1\n")
+# @AoD: @CHANGE:
+# f.write("manual_mode=1\n")
+f.write("manual_mode="+str(showEmulator_int)+"\n")
 f.write("max_emu=16\n")
 f.write("system_image="+destDir+setupRelPath+"/customimage/system.img\n")
 f.write("ramdisk_image="+destDir+setupRelPath+"/customimage/ramdisk.img\n")

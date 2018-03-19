@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-  echo "Usage: ${0} <ANDROID_HOME> [TOOLDIRNAME]"
+if [ $# -eq 0 ] || [ $# -gt 3 ]; then
+  echo "Usage: ${0} <ANDROID_HOME> <SHOWEMU> [TOOLDIRNAME]"
   exit 1
 fi
 
@@ -12,7 +12,9 @@ if [[ ! -e ${ANDROID_HOME} ]]; then
     exit 1
 fi
 
-TOOLDIRNAME=${2:-deploy}
+SHOWEMU=$2
+
+TOOLDIRNAME=${3:-deploy}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
@@ -52,7 +54,7 @@ rm -rf ${TOOLDIR}
 mkdir -p ${TOOLDIR}
 
 echo -n "    * building... "
-CMD="python dynodroidsetup.py ${DIR} ${TOOLDIR}"
+CMD="python dynodroidsetup.py ${DIR} ${TOOLDIR} ${SHOWEMU}"
 echo -n "${CMD}: "
 eval ${CMD}
 [[ $? -ne 0 ]] && echo "ERROR" && exit 1 || echo "OK"
