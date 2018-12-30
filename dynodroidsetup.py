@@ -46,30 +46,30 @@ def checkParams(arguments):
     global showEmulator_int
     svnDir = os.path.abspath(arguments[1])
     destDir = os.path.abspath(arguments[2])
-    
+
 
 #copy src folder to the destination dir
-def copyDirectory(srcDir,destDir):    
+def copyDirectory(srcDir,destDir):
     if(not os.path.isdir(srcDir)):
         print "Error: Src folder doesn't exist:",srcDir
         return -1
 
     if (os.path.exists(destDir)):
          shutil.rmtree(destDir,True)
-         
+
     shutil.copytree(srcDir,destDir)
     return 0
 
 
 #copy file from src to destination
-def copyFile(srcFile,destFile):    
+def copyFile(srcFile,destFile):
     if(not os.path.isfile(srcFile)):
         print "Error: Src File is not present at the location:",srcFile
         return -1
 
     if (not os.path.exists(os.path.dirname(destFile))):
          os.makedirs(os.path.dirname(destFile))
-         
+
     shutil.copyfile(srcFile,destFile)
     return 0
 
@@ -102,18 +102,18 @@ print "|    *   \ /   |  \  | *      *  *** |    *  |  /   *       *  |    |    
 print "|    *    |    |   \ | *      *      |    *  | /    *       *  |    |    * \n"
 print "|    *    |    |    \|  *    *       |    *  | \     *     *   |    |    * \n"
 print " ****     *    |     |   ****         ****   |  \      ****  *****   ****  \n"
-checkParams(sys.argv)   
+checkParams(sys.argv)
 sdkInstallPath = os.environ['SDK_INSTALL']
 
 if sdkInstallPath is None:
     print "You need to set SDK_INSTALL environment variable"
     sys.exit(-4)
-    
+
 #copy m3setup
 if(copyDirectory(svnDir+setupRelPath,destDir+setupRelPath) != 0):
     print "Problem occured while copying m3setup folder"
     sys.exit(-3)
-    
+
 #copy src
 if(copyDirectory(svnDir+srcRelPath,destDir+srcRelPath) != 0):
     print "Problem occured while copying src folder"
@@ -153,9 +153,9 @@ f.write("avd_store="+avdPath+"\n")
 f.write("event_count=100,1000\n")
 f.write("apktool_loc="+destDir+"/tools/apktool/apktool.jar\n")
 f.write("tools_dir="+destDir+"/tools/\n")
-# @AoD: @CHANGE:
-# f.write("manual_mode=1\n")
-f.write("manual_mode="+str(showEmulator_int)+"\n")
+f.write("manual_mode=1\n")
+# @AoD: change
+f.write("no_window="+str(showEmulator_int)+"\n")
 f.write("max_emu=16\n")
 f.write("system_image="+destDir+setupRelPath+"/customimage/system.img\n")
 f.write("ramdisk_image="+destDir+setupRelPath+"/customimage/ramdisk.img\n")

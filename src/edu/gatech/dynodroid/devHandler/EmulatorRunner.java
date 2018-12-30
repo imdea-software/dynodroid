@@ -83,6 +83,7 @@ public class EmulatorRunner implements Runnable {
 				+ " -verbose -debug-all"
 				+ " -show-kernel"
 				+ (PropertyParser.isManualMode?"":" -no-window")
+				+ (PropertyParser.noWindow?" -no-window":"")
 				+ " -scale 0.70"
 				+ " -kernel " + PropertyParser.kernelModulesLocation + "/zImage"
 				+ " -system " + PropertyParser.customSystemImg

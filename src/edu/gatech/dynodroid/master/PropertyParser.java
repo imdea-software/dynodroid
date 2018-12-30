@@ -57,6 +57,7 @@ public class PropertyParser {
 	public static String MonkeyRunnerScript = null;
 	public static int androidTarget = 3;
 	public static boolean isManualMode = false;
+	public static boolean noWindow = false;
 	public static String toolLoc = null;
 
 	public static boolean parsePropertiesFile(String propertiesFile) {
@@ -172,13 +173,13 @@ public class PropertyParser {
 				displayPropertiesUsage();
 				return false;
 			}
-			 
+
 			reportEmailUserName = prop.getProperty("report_email_user");
 			if(reportEmailUserName == null){
 				displayPropertiesUsage();
 				return false;
 			}
-			
+
 			reportEmailPassword = prop.getProperty("report_email_pass");
 			if(reportEmailPassword == null){
 				displayPropertiesUsage();
@@ -221,6 +222,14 @@ public class PropertyParser {
 			if (temp != null) {
 				try {
 					isManualMode = Integer.parseInt(temp) == 1?true:false;
+				} catch (Exception e) {
+				}
+			}
+
+			temp = prop.getProperty("no_window");
+			if (temp != null) {
+				try {
+					noWindow = Integer.parseInt(temp) == 1?true:false;
 				} catch (Exception e) {
 				}
 			}
@@ -323,9 +332,9 @@ public class PropertyParser {
 		System.out.println("\nRequired Properties:\n");
 		System.out.println("\nMost of These Properties will be filled by the deploy script and will be right, don't modify unless you really know what you are doing\n");
 		String mandatoryOptions = "\tapp_dir=<Absolute path to the directory containing all the Applications that need to be tested..>\n"
-								+ "\t\tNOTE:\n" 
+								+ "\t\tNOTE:\n"
 									+ "\t\t\tIF SOURCES ARE PRESNT THEN EACH APPLICATION SHOULD BE PRESENT IN SEPERATE FOLDER UNDER THE PROVIDED DIRECTORY\n"
-									+ "\t\t\tIF THE APPLICATION IS APK THEN APK NEEDS TO BE PRESENT\n" 
+									+ "\t\t\tIF THE APPLICATION IS APK THEN APK NEEDS TO BE PRESENT\n"
 								+ "\t[s]instru_setup=<Absolute path to the directory where all the necessary files required for instrumentation are present(will be autoconfigured by deployment script)>\n"
 								+ "\twork_dir=<Absolute path to the directory where all the logs and run time stats of the application(s) will be stored>\n"
 								+ "\tsdk_install=<The directory in which android sdk is installed>\n"
@@ -336,15 +345,15 @@ public class PropertyParser {
 								+ "\tsystem_image=<Absolute path to the system.img that needs to be used for emulator creation>\n"
 								+ "\tramdisk_image=<Absolute path to the ramdisk.img that needs to be used for emulator creation>\n"
 								+ "\tmonkeyrunner_script=<Absolute Path to the monkey runner script that is used to generate the input events>\n"
-								+ "\t[a]apktool_loc=<Absoulte Path to the apktool.jar file which will be used to extract the provided apk for AndroidManifest.xml>\n"								
+								+ "\t[a]apktool_loc=<Absoulte Path to the apktool.jar file which will be used to extract the provided apk for AndroidManifest.xml>\n"
 								+ "\tcomplete_notify=<Email-id to be notified after the test run is complete>\n"
 								+ "\treport_email_user=<gmail id which is used to send notification mail>\n"
 								+ "\treport_email_pass=<password of the notification mail id>\n";
-								
+
 
 		System.out.println(mandatoryOptions);
 		System.out.println("Optional Properties:");
-		
+
 		System.out.println("\t[s][defVal=100]cov_sam=<Number of events after which the coverage report needs to be generated>");
 		System.out.println("\t[defVal=0]manual_mode=<If you want the emulator to run in foreground (allowed values 0 or 1)>");
 		System.out.println("\t[defVal=16]max_emu=<Maximum number of emulatores that can be created simultaneosly>");
@@ -358,7 +367,7 @@ public class PropertyParser {
 				.println("\t\t [defVal=100]max_widgets=<Maximum Number of Events The need to be used for testing>");
 		System.out
 				.println("\t\t [defVal=RandomBiasBased]sel_stra=<Comma Separated Values of Widget Selection Strategies to be used for Testing the provided Apps..all strategies will be applied to all apps>");
-		
+
 		System.out.println("\t\t  Available Strategies are:"+StrategyFactory.frequencyBased+","+StrategyFactory.randomBased+","+StrategyFactory.randomBiasBased);
 
 		System.out.println("Optional Properties For RandomMonkeyTesting...");
@@ -370,7 +379,7 @@ public class PropertyParser {
 				+ "\t[default Value=15]trk_pct=<Integer indicating the percentage of track events in the random event generator>\n"
 				+ "\t  For More details on this refer Android Monkey Documentation\n";
 		System.out.println(monkeyOnlyOptions);
-		
+
 		System.out.println("\nPrefix [a] and [s] indicate that the corresponding properties will be used only for apks and apps with sources respectively");
 	}
 
