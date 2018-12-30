@@ -23,16 +23,23 @@ TOOLDIR=${DIR}/${TOOLDIRNAME}/
 
 
 echo "-- PREPARING ${TOOL}"
-echo -n "    * Downloading sdcard.img"
-# Thanks to https://stackoverflow.com/a/38937732/8091456
-ggID='1mf4kKCNgz059C5hzRKOT5Wk_e9WccmFk'
-ggURL='https://drive.google.com/uc?export=download'
-filename="$(curl -sc /tmp/gcokie "${ggURL}&id=${ggID}" | grep -o '="uc-name.*</span>' | sed 's/.*">//;s/<.a> .*//')"
-echo ${filename}
-getcode="$(awk '/_warning_/ {print $NF}' /tmp/gcokie)"
-URL="${ggURL}&confirm=${getcode}&id=${ggID}"
-curl -Lb /tmp/gcokie ${URL} -o ${filename}
-[[ $? -ne 0 ]] && echo "ERROR" && exit 1 || echo "OK"
+if [[ -f "${DIR}/fresavd/sdcard.img" ]]; then
+  echo -n "    * Coping sdcard.img backup: "
+  filename="sdcard.img"
+  cp "${DIR}/fresavd/${filename}" "${DIR}/"
+  [[ $? -ne 0 ]] && echo "ERROR" && exit 1 || echo "OK"
+else
+  echo "    * Downloading sdcard.img"
+  # Thanks to https://stackoverflow.com/a/38937732/8091456
+  ggID='1mf4kKCNgz059C5hzRKOT5Wk_e9WccmFk'
+  ggURL='https://drive.google.com/uc?export=download'
+  filename="$(curl -sc /tmp/gcokie "${ggURL}&id=${ggID}" | grep -o '="uc-name.*</span>' | sed 's/.*">//;s/<.a> .*//')"
+  getcode="$(awk '/_warning_/ {print $NF}' /tmp/gcokie)"
+  URL="${ggURL}&confirm=${getcode}&id=${ggID}"
+  curl -Lb /tmp/gcokie ${URL} -o ${filename}
+  echo -n "    * Downloading sdcard.img"
+  [[ $? -ne 0 ]] && echo "ERROR" && exit 1 || echo "OK"
+fi
 
 echo -n "    * "
 CMD="mv ${filename} ${DIR}/dynodroidsetup/freshavd/emu.avd/"
