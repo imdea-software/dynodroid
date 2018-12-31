@@ -37,7 +37,7 @@ else
   getcode="$(awk '/_warning_/ {print $NF}' /tmp/gcokie)"
   URL="${ggURL}&confirm=${getcode}&id=${ggID}"
   curl -Lb /tmp/gcokie ${URL} -o ${filename}
-  echo -n "    * Downloading sdcard.img"
+  echo -n "    * Downloading sdcard.img: "
   [[ $? -ne 0 ]] && echo "ERROR" && exit 1 || echo "OK"
 fi
 
