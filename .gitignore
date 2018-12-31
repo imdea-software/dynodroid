@@ -2,5 +2,9 @@
 # the build folder
 deploy
 
-# sdcard.img
+# sdcard.img for emulator
 dynodroidsetup/freshavd/emu.avd/sdcard.img
+# backup
+freshavd
+# tmp file location
+sdcard.img
